@@ -22,9 +22,10 @@ Future<void> startService() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   await GetStorage.init();
   // await startService();
-
+  //
   runApp(MyApp());
 }
 

@@ -9,13 +9,13 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/Data1.dart';
 import '../models/Qaree.dart';
-import '../services/HomeService.dart';
+import '../services/SurasDataProvider.dart';
 import '../views/SuraView.dart';
 
 class HomeController extends GetxController {
   /// DATA ========================
   final data = GetStorage();
-  final homeService = HomeService();
+  final homeService = SurasDataProvider();
   var suraList2 = <Surah>[].obs;
   var qareeList = <Qaree>[].obs;
   List<Ayah> _ayaList = <Ayah>[];
@@ -53,7 +53,8 @@ class HomeController extends GetxController {
 
   listenToIndex() {
     itemListener.itemPositions.addListener(() {
-      final indices = itemListener.itemPositions.value.map((e) => e.index).toList();
+      final indices =
+          itemListener.itemPositions.value.map((e) => e.index).toList();
       print(indices);
     });
   }
@@ -76,8 +77,12 @@ class HomeController extends GetxController {
   // ================================================================
 
   Stream<PositionData> get positionDataStream {
-    return RR.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(player.positionStream, player.bufferedPositionStream, player.durationStream, (position, bufferedPosition, duration) {
-      return PositionData(position, bufferedPosition, duration ?? Duration.zero);
+    return RR.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+        player.positionStream,
+        player.bufferedPositionStream,
+        player.durationStream, (position, bufferedPosition, duration) {
+      return PositionData(
+          position, bufferedPosition, duration ?? Duration.zero);
     });
   }
 
@@ -242,7 +247,13 @@ class HomeController extends GetxController {
             height: 150.0,
             child: Column(
               children: [
-                Expanded(child: Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix', style: TextStyle(fontFamily: 'Noor', fontWeight: FontWeight.bold, fontSize: 24.0))),
+                Expanded(
+                    child: Text(
+                        '${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                        style: TextStyle(
+                            fontFamily: 'Noor',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0))),
                 Expanded(
                   flex: 2,
                   child: Slider(
@@ -256,7 +267,8 @@ class HomeController extends GetxController {
                 ),
                 Expanded(
                   flex: 1,
-                  child: ElevatedButton(onPressed: onConfirmTaped, child: const Text("Save")),
+                  child: ElevatedButton(
+                      onPressed: onConfirmTaped, child: const Text("Save")),
                 ),
               ],
             ),

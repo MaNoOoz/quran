@@ -4,7 +4,7 @@ import 'package:quran_app/models/Data1.dart';
 
 import '../models/Qaree.dart';
 
-class HomeService {
+class SurasDataProvider {
   static Dio ins = Dio();
 
   /// REMOTE
