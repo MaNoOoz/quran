@@ -37,6 +37,7 @@ dependencies:
   get:
   logger:
   dio:
+  http:
   auto_size_text:
   google_fonts:
   flutter_gradient_colors:
@@ -46,6 +47,7 @@ dependencies:
   solid_bottom_sheet:
   just_audio_background:
   scrollable_positioned_list:
+  path_provider:
 
 dev_dependencies:
   flutter_test:

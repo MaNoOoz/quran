@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:quran_app/Bindings/Bindings.dart';
 import 'package:quran_app/routes/app_pages.dart';
 import 'package:quran_app/routes/app_routes.dart';
-import 'package:quran_app/views/HomeView.dart';
 
 import 'configs/Constants.dart';
 
@@ -23,7 +22,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await GetStorage.init();
-  // await startService();
 
   runApp(MyApp());
 }
@@ -39,9 +37,6 @@ class MyApp extends StatelessWidget {
       theme: Constants.lightTheme,
       themeMode: ThemeMode.light,
       enableLog: true,
-      home: HomeView(),
-      // smartManagement: SmartManagement.full,
-      // defaultTransition: Transition.fadeIn,
     );
   }
 }

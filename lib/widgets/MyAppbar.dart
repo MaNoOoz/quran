@@ -9,8 +9,6 @@ import '../controller/HomeController.dart';
 import '../models/Qaree.dart';
 
 class MyAppbar extends StatelessWidget {
-  MyAppbar();
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
@@ -18,7 +16,8 @@ class MyAppbar extends StatelessWidget {
             /* set Status bar color in Android devices. */
             statusBarIconBrightness: Brightness.dark,
             /* set Status bar icons color in Android devices.*/
-            statusBarBrightness: Brightness.dark) /* set Status bar icon color in iOS. */
+            statusBarBrightness:
+                Brightness.dark) /* set Status bar icon color in iOS. */
         );
 
     return SafeArea(child: GetBuilder<HomeController>(builder: (controller) {
@@ -38,6 +37,7 @@ class MyAppbar extends StatelessWidget {
               onPressed: () async {
                 await showSearch(context: context, delegate: SearchSura());
               },
+              tooltip: "بحث",
               icon: const Icon(
                 Icons.search,
                 color: Colors.black,
@@ -45,12 +45,14 @@ class MyAppbar extends StatelessWidget {
 
           /// Qaree =============
           IconButton(
+              tooltip: "تغير القارئ",
               onPressed: () {
                 Get.defaultDialog(
                   barrierDismissible: true,
                   confirm: ElevatedButton(
                       onPressed: () async {
-                        controller.data.write(Constants.QAREEID, controller.selectedQareeId);
+                        controller.data.write(
+                            Constants.QAREEID, controller.selectedQareeId);
                         Get.back();
                         await controller.getAllSurah();
                       },
@@ -69,10 +71,13 @@ class MyAppbar extends StatelessWidget {
   }
 
   Widget buildFutureBuilder() {
+    // todo fix bug --> qaree list = 0
+
     var controller = Get.find<HomeController>();
     List<Qaree> testListQaree = controller.qareeList;
     Logger().d("getAllQaree ${testListQaree.length}");
-    List<bool> _selections = List.generate(testListQaree.length, (index) => false);
+    List<bool> _selections =
+        List.generate(testListQaree.length, (index) => false);
 
     var textWidgets = testListQaree
         .map((Qaree e) => ListTile(
@@ -96,7 +101,8 @@ class MyAppbar extends StatelessWidget {
     });
   }
 
-  Widget buildContainer(List<Qaree> testListQaree, List<bool> _selections, List<ListTile> textWidgets) {
+  Widget buildContainer(List<Qaree> testListQaree, List<bool> _selections,
+      List<ListTile> textWidgets) {
     return Container(
       height: 300,
       width: 300,

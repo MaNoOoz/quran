@@ -146,7 +146,8 @@ class HomeController extends GetxController {
     try {
       isLoading(true);
       // selectedQareeId = data.read(Constants.QAREEID);
-      var products = await homeService.getAllSurahFromApi(selectedQareeId);
+      // var products = await homeService.getAllSurahFromApi(selectedQareeId);
+      var products = await homeService.getData(selectedQareeId);
       suraList2.assignAll(products);
       Logger().d("   suraList2 : ${suraList2.length}:");
       return suraList2;
@@ -191,15 +192,15 @@ class HomeController extends GetxController {
 
   // ================================================================
 
-  // Future<void> saveToDevice() async {
-  //   var a = await homeService.downloadQuran();
-  //   print(a);
-  // }
+  Future<void> saveToDevice() async {
+    await homeService.downloadQuran(selectedQareeId);
+  }
+
   //
-  // Future<void> readFromDevice() async {
-  //   var a = await homeService.LoadFromLocal();
-  //   Logger().d(" readFromDevice  called:");
-  // }
+  Future<void> readFromDevice() async {
+    var a = await homeService.getData(selectedQareeId);
+    Logger().d(" readFromDevice  called:");
+  }
 
   // ================================================================
 

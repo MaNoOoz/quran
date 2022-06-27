@@ -9,7 +9,6 @@ import '../widgets/MyAppbar.dart';
 import 'SuraView.dart';
 
 class HomeView extends StatelessWidget {
-  // var controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
@@ -20,23 +19,29 @@ class HomeView extends StatelessWidget {
         statusBarBrightness: Brightness.dark));
     /* set Status bar icon color in iOS. */
     return Scaffold(
-      // floatingActionButton: GetBuilder<HomeController>(
-      //   init: HomeController(),
-      //   builder: (controller) {
-      // return FloatingActionButton(
-      //   onPressed: () async {
-      //     await controller.getAllQaree();
-      //     // controller.isLoading.value = !controller.isLoading.value;
-      //     // print(controller.isLoading.value);
-      //     // await controller.read(controller.selectedQareeName);
-      //     // var savedData = controller.data.read(Constants.QAREEID);
-      //     // print(savedData);
-      //     // print((controller.read(controller.selectedQareeName)));
-      //   },
-      //   child: Text("${controller.data.read(Constants.QAREEID)}"),
-      // );
-      // },
-      // ),
+      floatingActionButton: GetBuilder<HomeController>(
+        init: HomeController(),
+        builder: (controller) {
+          return FloatingActionButton(
+            onPressed: () async {
+              // await controller.saveToDevice();
+              // await controller.readFromDevice();
+              await controller.getAllSurah();
+              // await controller.getAllSurah();
+              // controller.isLoading.value = !controller.isLoading.value;
+              // print(controller.isLoading.value);
+              // await controller.read(controller.selectedQareeName);
+              // var savedData = controller.data.read(Constants.QAREEID);
+              // print(savedData);
+              // print((controller.read(controller.selectedQareeName)));
+            },
+            child: IconButton(
+              onPressed: () async => await controller.getAllSurah(),
+              icon: Icon(Icons.download),
+            ),
+          );
+        },
+      ),
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: Padding(
@@ -55,7 +60,7 @@ class HomeView extends StatelessWidget {
   Widget _buildBody(HomeController controller) {
     return Obx(() {
       if (controller.isLoading.value == true) {
-        return Center(child: const CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       } else {
         return ListView.separated(
           separatorBuilder: (context, index) => const Divider(
