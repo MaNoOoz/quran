@@ -15,7 +15,6 @@ class LocalStorage {
 
   bool init() {
     int? visit = box.read('visit');
-    Logger().e("init : $visit");
 
     if (visit == null || visit == 0) {
       box.write('visit', 1);

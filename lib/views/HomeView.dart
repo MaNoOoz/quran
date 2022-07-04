@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:quran_app/controller/HomeController.dart';
 
 import '../configs/Constants.dart';
+import '../data/LocalStorage.dart';
 import '../models/Data1.dart';
 import '../widgets/Item.dart';
 import '../widgets/MyAppbar.dart';
@@ -11,6 +12,7 @@ import 'SpinKit.dart';
 import 'SuraView.dart';
 
 class HomeView extends StatelessWidget {
+  LocalStorage data = new LocalStorage();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
@@ -23,6 +25,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
+            data.remove();
             // var savedData = Get.find<HomeController>().data.read(Constants.QAREEID);
             // LocalStorage storage = LocalStorage();
             // var savedData2 = storage.remove();

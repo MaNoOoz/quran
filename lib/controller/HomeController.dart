@@ -189,15 +189,15 @@ class HomeController extends GetxController {
 
   // ================================================================
 
-  Future<void> saveToDevice() async {
-    await homeService.downloadQuran(selectedQareeId);
-  }
+  // Future<void> saveToDevice() async {
+  //   await homeService.saveToFile(selectedQareeId);
+  // }
 
   //
-  Future<void> readFromDevice() async {
-    var a = await homeService.getData(selectedQareeId);
-    Logger().d(" readFromDevice  called:");
-  }
+  // Future<void> readFromDevice() async {
+  //   var a = await homeService.getData(selectedQareeId);
+  //   Logger().d(" readFromDevice  called:");
+  // }
 
   // ================================================================
 

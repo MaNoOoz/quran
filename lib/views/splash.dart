@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:quran_app/configs/Constants.dart';
-import 'package:quran_app/views/HomeView.dart';
 import 'package:quran_app/views/SpinKit.dart';
 
 import '../configs/assets.dart';
+import 'HomeView.dart';
 
 class SplashScren extends StatefulWidget {
   const SplashScren({Key? key}) : super(key: key);
@@ -42,7 +42,6 @@ class _SplashScrenState extends State<SplashScren> {
               Constants.LoadingMessage,
               // style: Constants.mainStyle,
             ),
-            TextButton(onPressed: () => Get.to(() => HomeView()), child: Text("G"))
           ],
         ),
       ),
@@ -58,9 +57,10 @@ class _SplashScrenState extends State<SplashScren> {
 
   void initData() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Future.delayed(const Duration(seconds: 5), () async {
+      Future.delayed(const Duration(seconds: 3), () async {
         if (mounted) {
           await Get.to(() => HomeView());
+          // Logger().e("initData : .....");
         }
       });
     });

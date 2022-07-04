@@ -11,17 +11,16 @@ import '../models/Qaree.dart';
 
 class SurasDataProvider {
   static Dio ins = Dio();
-  final fileName = "suras.json";
+  final fileName = "suras";
 
   Future<List<Surah>> getData(String qareeId) async {
     var baseUrl = 'http://api.alquran.cloud/v1/quran/${qareeId}';
-    // var baseUrl = 'http://api.alquran.cloud/v1/quran/${qareeName}';
 
-    var file = await _localFile;
+    var file = await _localFile(qareeId);
     Logger().d("from ${file.toString()} \n ");
 
     if (file.existsSync()) {
-      return await _loadFromLocal();
+      return await _loadFromLocal(qareeId);
 
       //
       // Logger().d("from ${file.toString()} \n ");
@@ -42,10 +41,9 @@ class SurasDataProvider {
       // return chapters;
 
     } else {
-      return await _loadFromRemote(baseUrl: baseUrl);
+      return await _loadFromRemote(baseUrl: baseUrl, qareeName: qareeId);
     }
   }
-
 
   Future<List<Qaree>> getAllQareeFromApi() async {
     try {
@@ -74,42 +72,22 @@ class SurasDataProvider {
     }
   }
 
-  Future<void> downloadQuran(qareeName) async {
-    var path = 'http://api.alquran.cloud/v1/quran/${qareeName}';
-
-    var response = await http.get(Uri.parse(path));
-    if (response.statusCode == 200) {
-      var body = response.body;
-      Logger().d(response.runtimeType);
-
-      String dir = await _localPath;
-      File file = File('$dir/$fileName');
-      Logger().d(file.path);
-
-      file.writeAsStringSync(body, flush: true, mode: FileMode.write);
-
-      final data = file.readAsStringSync();
-      final res = json.decode(data);
-      Logger().d(res);
-    }
-  }
-
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
     return directory.path;
   }
 
-  Future<File> get _localFile async {
+  Future<File> _localFile(qareeName) async {
     final path = await _localPath;
-    return File('$path/$fileName');
+    return File('$path/$fileName$qareeName.json');
     // return path
   }
 
-  Future<List<Surah>> _loadFromLocal() async {
+  Future<List<Surah>> _loadFromLocal(qareeName) async {
     Logger().d("_loadFromLocal ${_loadFromLocal}");
 
-    var load = await _localFile;
+    var load = await _localFile(qareeName);
     // Logger().d("_localFile ${load.path}");
 
     // Read the file
@@ -135,16 +113,16 @@ class SurasDataProvider {
     return chapters;
   }
 
-  Future<List<Surah>> _loadFromRemote({required String baseUrl}) async {
-    final resp = await ins.get(
-      baseUrl,
-    );
+  Future<List<Surah>> _loadFromRemote({required String baseUrl, required qareeName}) async {
+    var path = 'http://api.alquran.cloud/v1/quran/${qareeName}';
 
-    Logger().d("$baseUrl ${resp.statusCode}");
+    var response = await http.get(Uri.parse(path));
+    if (response.statusCode == 200) {
+      var body = response.body;
+      final data = jsonDecode(response.body);
+      final data3 = data['data'];
 
-    if (resp.statusCode == 200) {
-      final Map<String, dynamic> data = resp.data['data'];
-      final List raw = data['surahs'];
+      final List raw = data3['surahs'];
       Logger().d("_loadFromRemote : \n ${raw.length}");
 
       final List<Surah> chapters = List.generate(
@@ -152,13 +130,21 @@ class SurasDataProvider {
         (index) => Surah.fromJson(raw[index]),
       );
 
+      String dir = await _localPath;
+      File file = File('$dir/$fileName$qareeName.json');
+      Logger().d(file.path);
+
+      file.writeAsStringSync(body, flush: true, mode: FileMode.write);
+
+      // final data2 = file.readAsStringSync();
+      // final res = json.decode(data2);
+
       return chapters;
     } else {
       print("Failed to load");
       throw Exception("Failed  to Load Post");
     }
   }
-
-  /// ======================================================================
-
 }
+
+/// ======================================================================
