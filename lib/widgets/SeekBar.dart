@@ -29,23 +29,23 @@ class _SeekBarState extends State<SeekBar> {
       children: [
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
-            trackHeight: 5.0,
-            trackShape: RoundedRectSliderTrackShape(),
-            activeTrackColor: Colors.purple.shade800,
-            inactiveTrackColor: Colors.purple.shade100,
-            thumbShape: RoundSliderThumbShape(
-              enabledThumbRadius: 14.0,
+            trackHeight: 2.0,
+            trackShape: const RoundedRectSliderTrackShape(),
+            activeTrackColor: Colors.green.shade800,
+            inactiveTrackColor: Colors.green.shade100,
+            thumbShape: const RoundSliderThumbShape(
+              enabledThumbRadius: 10.0,
               pressedElevation: 8.0,
             ),
-            thumbColor: Colors.pinkAccent,
-            overlayColor: Colors.pink.withOpacity(0.2),
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 32.0),
-            tickMarkShape: RoundSliderTickMarkShape(),
-            activeTickMarkColor: Colors.pinkAccent,
+            thumbColor: Colors.green,
+            overlayColor: Colors.green.withOpacity(0.2),
+            overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
+            tickMarkShape: const RoundSliderTickMarkShape(),
+            activeTickMarkColor: Colors.green,
             inactiveTickMarkColor: Colors.white,
-            valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+            valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
             valueIndicatorColor: Colors.black,
-            valueIndicatorTextStyle: TextStyle(
+            valueIndicatorTextStyle: const TextStyle(
               color: Colors.white,
               fontSize: 20.0,
             ),
@@ -67,7 +67,8 @@ class _SeekBarState extends State<SeekBar> {
                   child: Slider(
                     min: 0.0,
                     max: widget.duration.inMilliseconds.toDouble(),
-                    value: min(_dragValue ?? widget.position.inMilliseconds.toDouble(), widget.duration.inMilliseconds.toDouble()),
+                    value: min(_dragValue ?? widget.position.inMilliseconds.toDouble(),
+                        widget.duration.inMilliseconds.toDouble()),
                     onChanged: (value) {
                       setState(() {
                         _dragValue = value;
@@ -94,5 +95,6 @@ class _SeekBarState extends State<SeekBar> {
   String get _durationText => "${widget.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}"
       ":${widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}";
 
-  String get _positionText => "${widget.position.inMinutes.remainder(60).toString().padLeft(2, '0')}" ":${widget.position.inSeconds.remainder(60).toString().padLeft(2, '0')}";
+  String get _positionText => "${widget.position.inMinutes.remainder(60).toString().padLeft(2, '0')}"
+      ":${widget.position.inSeconds.remainder(60).toString().padLeft(2, '0')}";
 }

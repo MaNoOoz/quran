@@ -1,12 +1,12 @@
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart' as RR;
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../data/LocalStorage.dart';
 import '../models/Data1.dart';
 import '../models/Qaree.dart';
 import '../services/SurasDataProvider.dart';
@@ -14,7 +14,7 @@ import '../views/SuraView.dart';
 
 class HomeController extends GetxController {
   /// DATA ========================
-  final data = GetStorage();
+  LocalStorage storage = LocalStorage();
   final homeService = SurasDataProvider();
   var suraList2 = <Surah>[].obs;
   var qareeList = <Qaree>[].obs;
@@ -34,37 +34,37 @@ class HomeController extends GetxController {
   final player = AudioPlayer();
   RxDouble fontSize = 45.00.obs;
 
-  // var selectedQareeName = "ar.alafasy".obs;
   var selectedQareeId = "ar.alafasy";
   var selectedQareeName = "مشاري العفاسي";
 
   /// SCROLL
-  final itemController = ItemScrollController();
-  var itemListener = ItemPositionsListener.create();
+  ItemScrollController itemController = ItemScrollController();
+
+  // var itemListener = ItemPositionsListener.create();
   int buttonIndex = 0;
 
   Future scrollToItem(int itemIndex) async {
     itemController.scrollTo(
       index: itemIndex,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       alignment: 0,
     );
   }
 
-  listenToIndex() {
-    itemListener.itemPositions.addListener(() {
-      final indices =
-          itemListener.itemPositions.value.map((e) => e.index).toList();
-      print(indices);
-    });
-  }
+  // listenToIndex() {
+  //   itemListener.itemPositions.addListener(() {
+  //     final indices = itemListener.itemPositions.value.map((e) => e.index).toList();
+  //     print(indices);
+  //   });
+  // }
 
   @override
   void onInit() async {
     super.onInit();
+    Logger().d("onInit Called:");
+    Logger().d(" $selectedQareeId");
 
-    // selectedQareeId = data.read(Constants.QAREEID) ?? selectedQareeId;
-    // Logger().d("$selectedQareeId");
+    await storage.read();
 
     await getAllSurah();
     await getAllQaree();
@@ -78,11 +78,9 @@ class HomeController extends GetxController {
 
   Stream<PositionData> get positionDataStream {
     return RR.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        player.positionStream,
-        player.bufferedPositionStream,
-        player.durationStream, (position, bufferedPosition, duration) {
-      return PositionData(
-          position, bufferedPosition, duration ?? Duration.zero);
+        player.positionStream, player.bufferedPositionStream, player.durationStream,
+        (position, bufferedPosition, duration) {
+      return PositionData(position, bufferedPosition, duration ?? Duration.zero);
     });
   }
 
@@ -109,9 +107,8 @@ class HomeController extends GetxController {
     for (var element in ayaList) {
       var audio = AudioSource.uri(
         Uri.parse(
-          element.audio.toString(),
+          element.audioSecondary[0].toString(),
         ),
-        // tag: MediaItem(id: "55", title: "Yaman", artUri: Uri.parse("https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg")),
       );
 
       audioFromAyah.add(audio);
@@ -225,6 +222,7 @@ class HomeController extends GetxController {
   }
 
 // ================================================================
+
   void buildSliderDialog({
     String label = '',
     required BuildContext context,
@@ -249,12 +247,8 @@ class HomeController extends GetxController {
             child: Column(
               children: [
                 Expanded(
-                    child: Text(
-                        '${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
-                        style: TextStyle(
-                            fontFamily: 'Noor',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0))),
+                    child: Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                        style: const TextStyle(fontFamily: 'Noor', fontWeight: FontWeight.bold, fontSize: 24.0))),
                 Expanded(
                   flex: 2,
                   child: Slider(
@@ -268,8 +262,7 @@ class HomeController extends GetxController {
                 ),
                 Expanded(
                   flex: 1,
-                  child: ElevatedButton(
-                      onPressed: onConfirmTaped, child: const Text("Save")),
+                  child: ElevatedButton(onPressed: onConfirmTaped, child: const Text("حفظ")),
                 ),
               ],
             ),

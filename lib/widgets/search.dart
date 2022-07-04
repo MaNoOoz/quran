@@ -44,7 +44,8 @@ class SearchSura extends SearchDelegate {
     if (query.isNotEmpty) {
       return GetBuilder<HomeController>(builder: (c) {
         List<Surah> filterdList = c.suraList2.where((element) {
-          var searchResult = element.name.toLowerCase().contains(query) || element.englishName.toLowerCase().contains(query);
+          var searchResult =
+              element.name.toLowerCase().contains(query) || element.englishName.toLowerCase().contains(query);
 
           return searchResult;
         }).toList();
@@ -59,7 +60,7 @@ class SearchSura extends SearchDelegate {
             return MyItem(
                 sura: sura,
                 onTap: () async {
-                  Get.to(() => SuraView(), arguments: sura);
+                  await Get.to(() => SuraView(), arguments: sura);
                 });
           },
         );

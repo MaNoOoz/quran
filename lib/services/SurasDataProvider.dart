@@ -46,6 +46,7 @@ class SurasDataProvider {
     }
   }
 
+
   Future<List<Qaree>> getAllQareeFromApi() async {
     try {
       final resp = await ins.get(
