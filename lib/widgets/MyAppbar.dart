@@ -15,13 +15,13 @@ class MyAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-            // statusBarColor: Colors.white,
-            // statusBarColor: Constants.mainColor,
-            /* set Status bar color in Android devices. */
-            statusBarIconBrightness: Brightness.dark,
-            /* set Status bar icons color in Android devices.*/
-            statusBarBrightness: Brightness.dark) /* set Status bar icon color in iOS. */
-        );
+      statusBarColor: Colors.transparent,
+      //         // statusBarColor: Constants.mainColor,
+      //         /* set Status bar color in Android devices. */
+      //         statusBarIconBrightness: Brightness.dark,
+      //         /* set Status bar icons color in Android devices.*/
+      //         statusBarBrightness: Brightness.dark
+    ));
 
     return SafeArea(child: GetBuilder<HomeController>(builder: (controller) {
       return AppBar(
@@ -50,8 +50,8 @@ class MyAppbar extends StatelessWidget {
           IconButton(
             onPressed: () async {
               Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
-              Logger().e(" DARKK??  ${Get.isDarkMode}");
-              controller.update();
+              // Logger().e(" DARKK??  ${Get.isDarkMode}");
+              // controller.update();
             },
             tooltip: "الوضع الليلي",
             icon: Get.isDarkMode ? Icon(Icons.dark_mode) : Icon(Icons.lightbulb),
@@ -65,14 +65,11 @@ class MyAppbar extends StatelessWidget {
                   barrierDismissible: true,
                   confirm: ElevatedButton(
                     onPressed: () async {
-                      controller.storage.write();
+                      await controller.storage.write();
                       controller.storage.read();
 
                       Get.back();
-
-                      ///todo : 1
                       await controller.getAllSurah();
-                      // controller.update();
                     },
                     child: Text("حفظ"),
                     style: Constants.mainStyleButton,
@@ -146,6 +143,7 @@ class MyAppbar extends StatelessWidget {
                   controller.selectedQareeId = e.identifier;
                   controller.selectedQareeName = e.name;
                   Logger().d("e:: ${controller.selectedQareeName}");
+                  Logger().e("e:: ${controller.selectedQareeId}");
 
                   // Logger().d("qareeName2 ${controller.selectedQareeName}");
                 },

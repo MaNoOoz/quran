@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:quran_app/controller/HomeController.dart';
 
@@ -13,25 +12,30 @@ import 'SuraView.dart';
 
 class HomeView extends StatelessWidget {
   LocalStorage data = new LocalStorage();
+
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        // statusBarColor: Colors.black,
-        /* set Status bar color in Android devices. */
-        statusBarIconBrightness: Brightness.dark,
-        /* set Status bar icons color in Android devices.*/
-        statusBarBrightness: Brightness.dark));
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle.dark.copyWith(
+    //       statusBarColor: Colors.black,
+    /* set Status bar color in Android devices. */
+    // statusBarIconBrightness: Brightness.dark,
+    /* set Status bar icons color in Android devices.*/
+    // statusBarBrightness: Brightness.dark
+    // ),
+    // );
     /* set Status bar icon color in iOS. */
+
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            data.remove();
-            // var savedData = Get.find<HomeController>().data.read(Constants.QAREEID);
-            // LocalStorage storage = LocalStorage();
-            // var savedData2 = storage.remove();
-            // Logger().d("FFFF  $savedData");
-          },
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () async {
+        //     data.remove();
+        //     // var savedData = Get.find<HomeController>().data.read(Constants.QAREEID);
+        //     // LocalStorage storage = LocalStorage();
+        //     // var savedData2 = storage.remove();
+        //     // Logger().d("FFFF  $savedData");
+        //   },
+        // ),
         appBar: const PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: Padding(

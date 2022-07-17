@@ -17,13 +17,14 @@ class SuraView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+
     Surah surah = Get.arguments;
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         // statusBarColor: Colors.green.shade800,
-        /* set Status bar color in Android devices. */
         statusBarIconBrightness: Brightness.dark,
-        /* set Status bar icons color in Android devices.*/
         statusBarBrightness: Brightness.dark));
+
     /* set Status bar icon color in iOS. */
     //
     return GetBuilder<HomeController>(
@@ -58,9 +59,9 @@ class SuraView extends StatelessWidget {
               IconButton(
                 onPressed: () async {
                   Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
-                  Logger().e(" DARKK??  ${Get.isDarkMode}");
+                  // Logger().e(" DARKK??  ${Get.isDarkMode}");
 
-                  controller.update();
+                  // controller.update();
                 },
                 tooltip: "الوضع الليلي",
                 icon: Get.isDarkMode ? Icon(Icons.dark_mode) : Icon(Icons.lightbulb),
@@ -171,13 +172,25 @@ class SuraView extends StatelessWidget {
           minHeight: 180,
           maxHeight: 180,
           headerBar: Center(
-            child: Container(
-                height: 10,
-                child: Text(
-                  // " القارئ : ${controller.selectedQareeName} ",
-                  "",
-                  style: TextStyle(fontFamily: "Noor", fontSize: 22),
-                )),
+            child: Column(
+              children: [
+                Container(
+                    height: 10,
+                    child: Text(
+                      // "${controller.selectedQareeName}",
+                      "",
+                      style: TextStyle(fontFamily: "Noor", fontSize: 22),
+                    )),
+
+                // Divider(
+                // height: 10,
+                // child: Text(
+                // "${controller.selectedQareeName}",
+                // "",
+                // style: TextStyle(fontFamily: "Noor", fontSize: 22),
+                // ),
+              ],
+            ),
           ),
           body: FutureBuilder<List<AudioSource>>(
             future: controller.initPlayer(),
@@ -204,7 +217,7 @@ class SuraView extends StatelessWidget {
                             textDirection: TextDirection.rtl,
                             children: [
                               Expanded(
-                                flex: 2,
+                                flex: 1,
                                 child: Text(
                                   "${sura.name}",
                                   textAlign: TextAlign.center,
@@ -215,13 +228,27 @@ class SuraView extends StatelessWidget {
                                       fontFamily: "Noor"),
                                 ),
                               ),
+                              Container(
+                                width: 12,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "${controller.selectedQareeName}",
+                                  // "",
+                                  style: TextStyle(fontFamily: "Noor", fontSize: 18),
+                                ),
+                              ),
+                              Container(
+                                width: 12,
+                              ),
                               Expanded(
                                 child: Text(
                                   " عدد الآيات : ${sura.ayahs.length}",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                       // color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       // fontWeight: FontWeight.bold,
                                       fontFamily: "Noor"),
                                 ),

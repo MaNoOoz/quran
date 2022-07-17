@@ -26,28 +26,31 @@ class LocalStorage {
 
   void remove() {
     int? visit = box.read('visit');
-    Logger().e("remove : $visit");
+    // Logger().e("remove : $visit");
 
     if (box.hasData("visit")) {
       box.erase();
     }
   }
 
-  read() async {
-    var qareeFromMem = await box2.read(Constants.QAREEID);
+  Future<String> read() async {
+    String qareeFromMem = await box2.read(Constants.QAREEID);
+    Logger().d("start:  qareeFromMem :$qareeFromMem");
 
     try {
       if (qareeFromMem == null) {
-        Logger().d("qareeFromMem is null :$qareeFromMem");
+        Logger().d("if null : qareeFromMem is null :$qareeFromMem");
       } else {
-        Logger().d("qareeFromMem :$qareeFromMem");
+        Logger().d("else : qareeFromMem :$qareeFromMem");
       }
     } catch (e) {
       Logger().d("onInit :$e");
     }
+    return qareeFromMem;
   }
 
   write() async {
-    await box2.write(Constants.QAREEID, Get.find<HomeController>().selectedQareeId);
+    var c = Get.put(HomeController());
+    await box2.writeIfNull(Constants.QAREEID, c.selectedQareeId);
   }
 }

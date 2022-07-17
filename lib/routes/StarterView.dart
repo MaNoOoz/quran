@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 import '../data/LocalStorage.dart';
 import '../views/HomeView.dart';
@@ -28,6 +27,6 @@ class _StarterViewState extends State<StarterView> {
 
   void initValues() async {
     isNew = storage.init();
-    Logger().e("$isNew");
+    // Logger().e("$isNew");
   }
 }

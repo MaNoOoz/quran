@@ -62,12 +62,9 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     Logger().d("onInit Called:");
-    Logger().d(" $selectedQareeId");
 
-    await storage.read();
-
-    await getAllSurah();
     await getAllQaree();
+    await getAllSurah();
   }
 
   // ================================================================
@@ -86,7 +83,7 @@ class HomeController extends GetxController {
 
   // ================================================================
   Future<List<AudioSource>> initPlayer() async {
-    // Inform the operating system of our app's audio attributes etc.
+    // Inform the operati       ng system of our app's audio attributes etc.
     // We pick a reasonable default for an app that plays speech.
 
     final session = await AudioSession.instance;
@@ -142,8 +139,7 @@ class HomeController extends GetxController {
     suraList2.clear();
     try {
       isLoading(true);
-      // selectedQareeId = data.read(Constants.QAREEID);
-      // var products = await homeService.getAllSurahFromApi(selectedQareeId);
+
       var products = await homeService.getData(selectedQareeId);
       suraList2.assignAll(products);
       Logger().d("   suraList2 : ${suraList2.length}:");
