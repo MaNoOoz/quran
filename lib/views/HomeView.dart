@@ -15,21 +15,13 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle.dark.copyWith(
-    //       statusBarColor: Colors.black,
-    /* set Status bar color in Android devices. */
-    // statusBarIconBrightness: Brightness.dark,
-    /* set Status bar icons color in Android devices.*/
-    // statusBarBrightness: Brightness.dark
-    // ),
-    // );
-    /* set Status bar icon color in iOS. */
-
     return Scaffold(
         // floatingActionButton: FloatingActionButton(
         //   onPressed: () async {
-        //     data.remove();
+        //     var controller = Get.put(HomeController());
+        //     await controller.getAllQaree();
+        //
+        //     // data.remove();
         //     // var savedData = Get.find<HomeController>().data.read(Constants.QAREEID);
         //     // LocalStorage storage = LocalStorage();
         //     // var savedData2 = storage.remove();

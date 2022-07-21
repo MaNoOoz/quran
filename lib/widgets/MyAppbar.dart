@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:quran_app/widgets/search.dart';
 
 import '../configs/Constants.dart';
@@ -65,11 +64,11 @@ class MyAppbar extends StatelessWidget {
                   barrierDismissible: true,
                   confirm: ElevatedButton(
                     onPressed: () async {
-                      await controller.storage.write();
-                      controller.storage.read();
+                      // await controller.storage.write();
+                      // controller.storage.read();
 
+                      await controller.getAllDATA();
                       Get.back();
-                      await controller.getAllSurah();
                     },
                     child: Text("حفظ"),
                     style: Constants.mainStyleButton,
@@ -89,11 +88,9 @@ class MyAppbar extends StatelessWidget {
   }
 
   Widget buildFutureBuilder() {
-    // todo fix bug --> qaree list = 0
-
     var controller = Get.find<HomeController>();
     List<Qaree> testListQaree = controller.qareeList;
-    Logger().d("getAllQaree ${testListQaree.length}");
+    // Logger().d("getAllQaree ${testListQaree.length}");
     List<bool> selections = List.generate(testListQaree.length, (index) => false);
 
     var textWidgets = testListQaree
@@ -142,8 +139,8 @@ class MyAppbar extends StatelessWidget {
                   controller.changeQaree(index, _selections);
                   controller.selectedQareeId = e.identifier;
                   controller.selectedQareeName = e.name;
-                  Logger().d("e:: ${controller.selectedQareeName}");
-                  Logger().e("e:: ${controller.selectedQareeId}");
+                  // Logger().d("e:: ${controller.selectedQareeName}");
+                  // Logger().e("e:: ${controller.selectedQareeId}");
 
                   // Logger().d("qareeName2 ${controller.selectedQareeName}");
                 },

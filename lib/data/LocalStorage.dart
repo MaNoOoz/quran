@@ -1,9 +1,4 @@
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:logger/logger.dart';
-
-import '../configs/Constants.dart';
-import '../controller/HomeController.dart';
 
 class LocalStorage {
   GetStorage box = GetStorage('App');
@@ -33,24 +28,24 @@ class LocalStorage {
     }
   }
 
-  Future<String> read() async {
-    String qareeFromMem = await box2.read(Constants.QAREEID);
-    Logger().d("start:  qareeFromMem :$qareeFromMem");
+  // Future<String> read() async {
+  //   String qareeFromMem = await box2.read(Constants.QAREEID);
+  //   Logger().d("start:  qareeFromMem :$qareeFromMem");
+  //
+  //   try {
+  //     if (qareeFromMem == null) {
+  //       Logger().d("if null : qareeFromMem is null :$qareeFromMem");
+  //     } else {
+  //       Logger().d("else : qareeFromMem :$qareeFromMem");
+  //     }
+  //   } catch (e) {
+  //     Logger().d("onInit :$e");
+  //   }
+  //   return qareeFromMem;
+  // }
 
-    try {
-      if (qareeFromMem == null) {
-        Logger().d("if null : qareeFromMem is null :$qareeFromMem");
-      } else {
-        Logger().d("else : qareeFromMem :$qareeFromMem");
-      }
-    } catch (e) {
-      Logger().d("onInit :$e");
-    }
-    return qareeFromMem;
-  }
-
-  write() async {
-    var c = Get.put(HomeController());
-    await box2.writeIfNull(Constants.QAREEID, c.selectedQareeId);
-  }
+  // write() async {
+  //   var c = Get.put(HomeController());
+  //   await box2.writeIfNull(Constants.QAREEID, c.selectedQareeId);
+  // }
 }

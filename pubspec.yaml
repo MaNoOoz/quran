@@ -43,6 +43,7 @@ dependencies:
   google_fonts:
   flutter_gradient_colors:
 
+
   just_audio: ^0.9.24
   just_audio_windows: any # substitute version number
   just_audio_background: ^0.0.1-beta.6
@@ -81,10 +82,25 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
-    - assets/images/
-    - assets/logos/
-
+    - assets/jsons/surasar.abdullahbasfar.json
+    - assets/jsons/surasar.abdulsamad.json
+    - assets/jsons/surasar.abdurrahmaansudais.json
+    - assets/jsons/surasar.ahmedajamy.json
+    - assets/jsons/surasar.alafasy.json
+    - assets/jsons/surasar.aymanswoaid.json
+    - assets/jsons/surasar.hanirifai.json
+    - assets/jsons/surasar.hudhaify.json
+    - assets/jsons/surasar.husary.json
+    - assets/jsons/surasar.husarymujawwad.json
+    - assets/jsons/surasar.ibrahimakhbar.json
+    - assets/jsons/surasar.mahermuaiqly.json
+    - assets/jsons/surasar.muhammadayyoub.json
+    - assets/jsons/surasar.muhammadjibreel.json
+    - assets/jsons/surasar.parhizgar.json
+    - assets/jsons/surasar.saoodshuraym.json
+    - assets/jsons/surasar.shaatree.json
+    - assets/jsons/qaree.json
+    - assets/logos/logo.jpg
   fonts:
     - family: Poppins
       fonts:

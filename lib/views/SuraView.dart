@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:logger/logger.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
@@ -131,12 +130,10 @@ class SuraView extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           var ayaIndex = controller.currentPlayingAyaIndex;
-          Logger().d(" aya  ${ayaIndex.value}:");
           controller.currentPlayingAyaIndex.value = index;
           controller.player.seek(const Duration(seconds: 0), index: index);
           controller.player.play();
 
-          Logger().d(" List  ${index}:");
           // await controller.playAya2(index);
         },
         child: Obx(() {
@@ -371,8 +368,6 @@ class SuraView extends StatelessWidget {
                                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
                                   await controller.scrollToItem(controller.player.currentIndex!.toInt());
                                 });
-
-                                Logger().d("${controller.player.currentIndex}");
                               },
                               icon: const Icon(
                                 Icons.skip_previous,

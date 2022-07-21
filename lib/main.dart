@@ -13,6 +13,7 @@ import 'configs/Constants.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   await GetStorage.init('App');
   runApp(MyApp());
 }
@@ -21,14 +22,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: AppRoutes.initialRoute,
+      initialRoute: AppRoutes.HOME,
       initialBinding: InitialBinding(),
       getPages: AppPages.list,
       debugShowCheckedModeBanner: false,
       theme: Constants.lightTheme,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       enableLog: true,
     );
-    // home: isNew ? SplashScren() : HomeView());
   }
 }
