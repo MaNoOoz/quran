@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:quran_app/models/Data1.dart';
 
 import '../models/Qaree.dart';
 
 class SurasDataProvider {
-  static Dio ins = Dio();
   final fileName = "suras";
 
   Future<List<Surah>> getData(String qareeId) async {

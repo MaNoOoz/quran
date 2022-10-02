@@ -2,6 +2,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart' as RR;
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -24,7 +25,6 @@ class HomeController extends GetxController {
   }
 
   /// Player ========================
-  Duration defaultDuration = const Duration(milliseconds: 1);
   bool isLoopingCurrentItem = false;
   var currentPlayingAyaIndex = 0.obs;
   RxBool isLoading = true.obs;
@@ -79,7 +79,7 @@ class HomeController extends GetxController {
     await session.configure(const AudioSessionConfiguration.speech());
     player.playbackEventStream.listen((event) {
       currentPlayingAyaIndex.value = player.currentIndex!;
-      // print('playbackEventStream: $event');
+      print('playbackEventStream: $event');
       // print('currentPlayingAyaIndex: $currentPlayingAyaIndex');
     }, onError: (Object e, StackTrace stackTrace) {
       print('A stream error occurred: $e');
@@ -92,18 +92,15 @@ class HomeController extends GetxController {
     audioFromAyah.clear();
 
     for (var element in ayaList) {
-      var audio = AudioSource.uri(
-        Uri.parse(
-          element.audioSecondary[0].toString(),
-        ),
-      );
+      var audio = AudioSource.uri(Uri.parse(element.audioSecondary[0].toString()));
 
       audioFromAyah.add(audio);
+      Logger().d(" _initPlayer  called: ${audioFromAyah.length}");
     }
     // Logger().d(" audio list ${ayaList.length}:");
 
     try {
-      defaultDuration = (await player.setAudioSource(
+      await player.setAudioSource(
         ConcatenatingAudioSource(
           // Start loading next item just before reaching it.
           useLazyPreparation: true, // default
@@ -116,7 +113,23 @@ class HomeController extends GetxController {
         initialIndex: 0, // default
         // Playback will be prepared to start from position zero.
         initialPosition: Duration.zero, // default
-      ))!;
+      );
+    } on PlayerException catch (e) {
+      // iOS/macOS: maps to NSError.code
+      // Android: maps to ExoPlayerException.type
+      // Web: maps to MediaError.code
+      // Linux/Windows: maps to PlayerErrorCode.index
+      print("Error code: ${e.code}");
+      // iOS/macOS: maps to NSError.localizedDescription
+      // Android: maps to ExoPlaybackException.getMessage()
+      // Web/Linux: a generic message
+      // Windows: MediaPlayerError.message
+      print("Error message: ${e.message}");
+    } on PlayerInterruptedException catch (e) {
+      // This call was interrupted since another audio source was loaded or the
+      // player was stopped or disposed before this audio source could complete
+      // loading.
+      print("Connection aborted: ${e.message}");
     } catch (e) {
       print("Error loading audio source: $e");
     }
@@ -124,52 +137,52 @@ class HomeController extends GetxController {
     return audioFromAyah;
   }
 
-  Future<List<AudioSource>> initPlayerForSura() async {
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.speech());
-    player.playbackEventStream.listen((event) {
-      currentPlayingAyaIndex.value = player.currentIndex!;
-      // print('playbackEventStream: $event');
-      // print('currentPlayingAyaIndex: $currentPlayingAyaIndex');
-    }, onError: (Object e, StackTrace stackTrace) {
-      print('A stream error occurred: $e');
-    });
-
-    List<AudioSource> audioFromAyah = [];
-
-    // Logger().d(" _initPlayer  called:");
-
-    audioFromAyah.clear();
-
-    for (var element in suraList2.value) {
-      for (Ayah ayah in element.ayahs) {
-        var audio = AudioSource.uri(Uri.parse(ayah.audioSecondary[0].toString()));
-        audioFromAyah.add(audio);
-      }
-    }
-    // Logger().d(" audio list ${ayaList.length}:");
-
-    try {
-      defaultDuration = (await player.setAudioSource(
-        ConcatenatingAudioSource(
-          // Start loading next item just before reaching it.
-          useLazyPreparation: true, // default
-          // Customise the shuffle algorithm.
-          shuffleOrder: DefaultShuffleOrder(), // default
-          // Specify the items in the playlist.
-          children: [...audioFromAyah],
-        ),
-        // Playback will be prepared to start from track1.mp3
-        initialIndex: 0, // default
-        // Playback will be prepared to start from position zero.
-        initialPosition: Duration.zero, // default
-      ))!;
-    } catch (e) {
-      print("Error loading audio source: $e");
-    }
-    // Logger().d("   AUDIOS : ${audioFromAyah.length}:");
-    return audioFromAyah;
-  }
+  // Future<List<AudioSource>> initPlayerForSura() async {
+  //   final session = await AudioSession.instance;
+  //   await session.configure(const AudioSessionConfiguration.speech());
+  //   player.playbackEventStream.listen((event) {
+  //     currentPlayingAyaIndex.value = player.currentIndex!;
+  //     // print('playbackEventStream: $event');
+  //     // print('currentPlayingAyaIndex: $currentPlayingAyaIndex');
+  //   }, onError: (Object e, StackTrace stackTrace) {
+  //     print('A stream error occurred: $e');
+  //   });
+  //
+  //   List<AudioSource> audioFromAyah = [];
+  //
+  //   // Logger().d(" _initPlayer  called:");
+  //
+  //   audioFromAyah.clear();
+  //
+  //   for (var element in suraList2.value) {
+  //     for (Ayah ayah in element.ayahs) {
+  //       var audio = AudioSource.uri(Uri.parse(ayah.audioSecondary[0].toString()));
+  //       audioFromAyah.add(audio);
+  //     }
+  //   }
+  //   // Logger().d(" audio list ${ayaList.length}:");
+  //
+  //   try {
+  //     defaultDuration = (await player.setAudioSource(
+  //       ConcatenatingAudioSource(
+  //         // Start loading next item just before reaching it.
+  //         useLazyPreparation: true, // default
+  //         // Customise the shuffle algorithm.
+  //         shuffleOrder: DefaultShuffleOrder(), // default
+  //         // Specify the items in the playlist.
+  //         children: [...audioFromAyah],
+  //       ),
+  //       // Playback will be prepared to start from track1.mp3
+  //       initialIndex: 0, // default
+  //       // Playback will be prepared to start from position zero.
+  //       initialPosition: Duration.zero, // default
+  //     ))!;
+  //   } catch (e) {
+  //     print("Error loading audio source: $e");
+  //   }
+  //   // Logger().d("   AUDIOS : ${audioFromAyah.length}:");
+  //   return audioFromAyah;
+  // }
 
   // ================================================================
   Future<List<Surah>> getAllDATA() async {
