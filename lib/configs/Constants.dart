@@ -7,13 +7,13 @@ class Constants {
   static var LASTREAD = "LastRead";
   static var FONTSIZE = "FontSize";
   static TextStyle mainStyleText = TextStyle(fontFamily: "Noor");
-  static ButtonStyle mainStyleButton = ElevatedButton.styleFrom(primary: Colors.green);
+  static ButtonStyle mainStyleButton = ElevatedButton.styleFrom();
   static String LoadingMessage = "إنتظر من فضلك";
 
   static Color mainColor = const Color(0xff0c3622);
 
   static ThemeData darkTheme = ThemeData(
-      accentColor: Colors.red,
+      hintColor: Colors.red,
       brightness: Brightness.light,
       colorScheme: ColorScheme.dark(),
       primaryColor: Colors.black87,
@@ -23,7 +23,7 @@ class Constants {
       ));
 
   static ThemeData lightTheme = ThemeData(
-      accentColor: Colors.pink,
+      hintColor: Colors.pink,
       brightness: Brightness.light,
       primaryColor: Colors.white10,
       // appBarTheme: ,

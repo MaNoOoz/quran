@@ -157,7 +157,14 @@ class SuraView extends StatelessWidget {
       ),
     );
   }
-
+  Future<List<AudioSource>> _checkNetworkAndInit(controller) async {
+    bool hasConnection = await controller.hasNetwork();
+    if (hasConnection) {
+      return await controller.initPlayer();
+    } else {
+      throw Exception("No Internet");
+    }
+  }
   Widget _buildSolidBottomSheet(Surah sura) {
     return GetBuilder<HomeController>(builder: (controller) {
       return Container(
@@ -190,8 +197,8 @@ class SuraView extends StatelessWidget {
             ),
           ),
           body: FutureBuilder<List<AudioSource>>(
-            future: controller.initPlayer(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+            future: _checkNetworkAndInit(controller),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return Column(
                   mainAxisSize: MainAxisSize.max,

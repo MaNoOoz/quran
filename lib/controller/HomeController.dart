@@ -11,7 +11,7 @@ import '../models/Data1.dart';
 import '../models/Qaree.dart';
 import '../services/SurasDataProvider.dart';
 import '../views/SuraView.dart';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 class HomeController extends GetxController {
   /// DATA ========================
   LocalStorage storage = LocalStorage();
@@ -74,7 +74,14 @@ class HomeController extends GetxController {
   }
 
   // ================================================================
+  Future<bool> hasNetwork() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
+  }
+
   Future<List<AudioSource>> initPlayer() async {
+
+
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.speech());
     player.playbackEventStream.listen((event) {
@@ -216,8 +223,8 @@ class HomeController extends GetxController {
     qareeList.clear();
     try {
       isLoading(true);
-      var qarees = await homeService.getAllQaree();
-      qareeList.assignAll(qarees);
+      // var qarees = await homeService.getAllQaree();
+      // qareeList.assignAll(qarees);
       // Logger().d("   qarees : ${qareeList.length}:");
       return qareeList;
     } finally {

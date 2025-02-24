@@ -95,15 +95,15 @@ class MyAppbar extends StatelessWidget {
 
     var textWidgets = testListQaree
         .map((Qaree e) => ListTile(
-              title: Text(
-                e.name,
-                style: const TextStyle(fontFamily: "Noor", fontSize: 33),
-              ),
-              subtitle: Text(
-                "${e.englishName} ",
-                maxLines: 2,
-              ),
-            ))
+      title: Text(
+        e.name,
+        style: const TextStyle(fontFamily: "Noor", fontSize: 33),
+      ),
+      subtitle: Text(
+        "${e.englishName} ",
+        maxLines: 2,
+      ),
+    ))
         .toList();
 
     return Obx(() {
@@ -115,8 +115,8 @@ class MyAppbar extends StatelessWidget {
           height: 50.0,
           child: Center(
               child: SpinKit(
-            color: Colors.red,
-          )),
+                color: Colors.red,
+              )),
         );
       } else {
         return buildContainer(testListQaree, selections, textWidgets);

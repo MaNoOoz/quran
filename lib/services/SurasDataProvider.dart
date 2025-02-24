@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:quran_app/models/Data1.dart';
 
 import '../models/Qaree.dart';
-
-class SurasDataProvider {
+import 'package:http/http.dart' as http;
+class SurasDataProvider2 {
   final fileName = "suras";
 
   Future<List<Surah>> getData(String qareeId) async {
@@ -57,4 +57,24 @@ class SurasDataProvider {
   }
 }
 
+class SurasDataProvider {
+  final String apiBaseUrl = "http://api.alquran.cloud/v1/quran";
+
+  Future<List<Surah>> getData(String qareeId) async {
+    final response = await http.get(Uri.parse('$apiBaseUrl/$qareeId'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      final List surahs = data['data']['surahs']; // Extract surahs list
+
+      return List<Surah>.generate(
+        surahs.length,
+            (index) => Surah.fromJson(surahs[index]),
+      );
+    } else {
+      throw Exception("Failed to load surahs from API");
+    }
+  }
+}
 /// ======================================================================
