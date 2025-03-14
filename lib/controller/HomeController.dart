@@ -1,4 +1,5 @@
 import 'package:audio_session/audio_session.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
@@ -11,7 +12,7 @@ import '../models/Data1.dart';
 import '../models/Qaree.dart';
 import '../services/SurasDataProvider.dart';
 import '../views/SuraView.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 class HomeController extends GetxController {
   /// DATA ========================
   LocalStorage storage = LocalStorage();
@@ -19,7 +20,9 @@ class HomeController extends GetxController {
   var suraList2 = <Surah>[].obs;
   var qareeList = <Qaree>[].obs;
   List<Ayah> _ayaList = <Ayah>[];
+
   List<Ayah> get ayaList => _ayaList;
+
   set ayaList(List<Ayah> value) {
     _ayaList = value;
   }
@@ -54,6 +57,14 @@ class HomeController extends GetxController {
   //     print(indices);
   //   });
   // }
+  Future<List<AudioSource>> checkNetworkAndInit() async {
+    bool hasConnection = await hasNetwork();
+    if (hasConnection) {
+      return await initPlayer();
+    } else {
+      throw Exception("No Internet");
+    }
+  }
 
   @override
   void onInit() async {
@@ -67,9 +78,11 @@ class HomeController extends GetxController {
   // ================================================================
   Stream<PositionData> get positionDataStream {
     return RR.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        player.positionStream, player.bufferedPositionStream, player.durationStream,
-        (position, bufferedPosition, duration) {
-      return PositionData(position, bufferedPosition, duration ?? Duration.zero);
+        player.positionStream,
+        player.bufferedPositionStream,
+        player.durationStream, (position, bufferedPosition, duration) {
+      return PositionData(
+          position, bufferedPosition, duration ?? Duration.zero);
     });
   }
 
@@ -80,8 +93,6 @@ class HomeController extends GetxController {
   }
 
   Future<List<AudioSource>> initPlayer() async {
-
-
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.speech());
     player.playbackEventStream.listen((event) {
@@ -99,7 +110,8 @@ class HomeController extends GetxController {
     audioFromAyah.clear();
 
     for (var element in ayaList) {
-      var audio = AudioSource.uri(Uri.parse(element.audioSecondary[0].toString()));
+      var audio =
+          AudioSource.uri(Uri.parse(element.audioSecondary[0].toString()));
 
       audioFromAyah.add(audio);
       Logger().d(" _initPlayer  called: ${audioFromAyah.length}");
@@ -223,9 +235,9 @@ class HomeController extends GetxController {
     qareeList.clear();
     try {
       isLoading(true);
-      // var qarees = await homeService.getAllQaree();
-      // qareeList.assignAll(qarees);
-      // Logger().d("   qarees : ${qareeList.length}:");
+      var qarees = await homeService.getAllQareeFromApi();
+      qareeList.assignAll(qarees);
+      Logger().d("   qarees : ${qareeList.length}:");
       return qareeList;
     } finally {
       isLoading(false);
@@ -278,8 +290,12 @@ class HomeController extends GetxController {
             child: Column(
               children: [
                 Expanded(
-                    child: Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
-                        style: const TextStyle(fontFamily: 'Noor', fontWeight: FontWeight.bold, fontSize: 24.0))),
+                    child: Text(
+                        '${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                        style: const TextStyle(
+                            fontFamily: 'Noor',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0))),
                 Expanded(
                   flex: 2,
                   child: Slider(
@@ -293,7 +309,8 @@ class HomeController extends GetxController {
                 ),
                 Expanded(
                   flex: 1,
-                  child: ElevatedButton(onPressed: onConfirmTaped, child: const Text("حفظ")),
+                  child: ElevatedButton(
+                      onPressed: onConfirmTaped, child: const Text("حفظ")),
                 ),
               ],
             ),
@@ -305,5 +322,4 @@ class HomeController extends GetxController {
 // ================================================================
 
 // ================================================================
-
 }

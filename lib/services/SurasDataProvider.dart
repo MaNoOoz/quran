@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:quran_app/models/Data1.dart';
 
 import '../models/Qaree.dart';
-import 'package:http/http.dart' as http;
+
 class SurasDataProvider2 {
   final fileName = "suras";
 
@@ -76,5 +77,28 @@ class SurasDataProvider {
       throw Exception("Failed to load surahs from API");
     }
   }
+
+  Future<List<Qaree>> getAllQareeFromApi() async {
+    final response = await http.get(Uri.parse(
+        "http://api.alquran.cloud/v1/edition?format=audio&language=ar&type=versebyverse"));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      // final Map<String, dynamic> raw = resp.data['data'];
+      final List data2 = data['data'];
+      // Logger().d("RES ${data} \n ");
+
+      // final List data = raw['surahs'];
+      final List<Qaree> chapters = List.generate(
+        data2.length,
+        (index) => Qaree.fromJson(data2[index]),
+      );
+      return chapters;
+    } else {
+      throw Exception("Failed to load surahs from API");
+    }
+  }
 }
+
 /// ======================================================================
